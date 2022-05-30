@@ -1,7 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import {View, Text, Image, TouchableOpacity, Animated} from 'react-native';
 import {SIZES, COLORS, FONTS} from '../constants';
-const ProfileRadioButton = ({icon, label, isSelected, onPress}) => {
+import { toggleTheme } from '../stores/themeActions';
+import { connect } from 'react-redux';
+
+const ProfileRadioButton = ({appTheme, icon, label, isSelected, onPress}) => {
     const radioAnimated = useRef(new Animated.Value(0)).current
 
     const circleColorAnimated = radioAnimated.interpolate({
@@ -46,7 +49,7 @@ const ProfileRadioButton = ({icon, label, isSelected, onPress}) => {
           alignItems: 'center',
           justifyContent: 'center',
           borderRadius: 20,
-          backgroundColor: COLORS.additionalColor11,
+          backgroundColor: appTheme.backgroundColor3,
         }}>
         <Image
           source={icon}
@@ -64,6 +67,7 @@ const ProfileRadioButton = ({icon, label, isSelected, onPress}) => {
         }}>
             <Text
                 style={{
+                    color:appTheme?.textColor,
                     ...FONTS.body3
                 }}
             >
@@ -99,7 +103,7 @@ const ProfileRadioButton = ({icon, label, isSelected, onPress}) => {
                 borderRadius:15,
                 borderWidth: 5,
                 borderColor:circleColorAnimated,
-                backgroundColor: COLORS.white
+                backgroundColor: appTheme?.backgroundColor1
             }}
             />
         </TouchableOpacity>
@@ -107,4 +111,17 @@ const ProfileRadioButton = ({icon, label, isSelected, onPress}) => {
   );
 };
 
-export default ProfileRadioButton;
+const mapStateToProps = state => {
+    return {
+      appTheme: state.appTheme,
+    };
+  };
+  
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+     
+    };
+  };
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(ProfileRadioButton);

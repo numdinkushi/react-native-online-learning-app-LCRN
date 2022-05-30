@@ -16,10 +16,23 @@ import {
   ProfileValue,
   ProfileRadioButton,
 } from '../../components';
+import { toggleTheme } from '../../stores/themeAction';
+import {connect} from 'react-redux';
 
-const Profile = () => {
+const Profile = ({appTheme, toggleTheme}) => {
   const [newCourseNotification, setNewCourseNotification] = useState(false);
   const [studyReminder, setStudyReminder] = useState(false);
+
+  //handler 
+
+  function toggleThemeHandler (){
+    if(appTheme?.name == "light"){
+      toggleTheme("dark")
+    }else{
+      toggleTheme("light")
+    }
+  }
+  //render
 
   function renderHeader() {
     return (
@@ -33,15 +46,16 @@ const Profile = () => {
         <Text
           style={{
             ...FONTS.h1,
-            color: COLORS.black,
+            color:appTheme.textColor,
           }}>
           Profile
         </Text>
         <IconButton
           icon={icons.sun}
           iconStyle={{
-            tintColor: COLORS.black,
+            tintColor: appTheme.tintColor,
           }}
+          onPress={() => toggleThemeHandler()}
         />
       </View>
     );
@@ -56,7 +70,7 @@ const Profile = () => {
           paddingHorizontal: SIZES.radius,
           paddingVertical: 20,
           borderRadius: SIZES.radius,
-          backgroundColor: COLORS.primary3,
+          backgroundColor: appTheme?.backgroundColor2,
         }}>
         {/* profile Image */}
         <TouchableOpacity
@@ -159,10 +173,10 @@ const Profile = () => {
               marginTop: SIZES.padding,
               paddingHorizontal: SIZES.radius,
               borderRadius: 20,
-              backgroundColor: COLORS.white,
+              backgroundColor: appTheme?.backgroundColor4,
             }}
             labelStyle={{
-              color: COLORS.primary,
+              color: appTheme.textColor2,
             }}
           />
         </View>
@@ -230,7 +244,7 @@ const Profile = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: COLORS.white,
+        backgroundColor: appTheme?.backgroundColor1,
       }}>
       {/* Header  */}
       {renderHeader()}
@@ -262,4 +276,20 @@ const styles = StyleSheet.create({
     borderColor: COLORS.gray20,
   },
 });
-export default Profile;
+
+const mapStateToProps = state => {
+  return {
+    appTheme: state.appTheme,
+    error: state.error,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleTheme: themeType => {
+      return dispatch(toggleTheme(themeType));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

@@ -2,8 +2,9 @@ import React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {FONTS, COLORS, SIZES, constants, icons} from '../constants';
 import LineDivider from './LineDivider';
+import { connect } from 'react-redux';
 
-const ProfileValue = ({icon, label, value, onPress}) => {
+const ProfileValue = ({appTheme, icon, label, value, onPress}) => {
   return (
     <TouchableOpacity
       style={{
@@ -20,7 +21,7 @@ const ProfileValue = ({icon, label, value, onPress}) => {
           alignItems: 'center',
           justifyContent: 'center',
           borderRadius: 20,
-          backgroundColor: COLORS.additionalColor4,
+          backgroundColor: appTheme?.backgroundColor3,
         }}>
         <Image
           source={icon}
@@ -53,7 +54,7 @@ const ProfileValue = ({icon, label, value, onPress}) => {
             <Text 
             style={{
                 ...FONTS.h3,
-                color: COLORS.gray50
+                color: appTheme?.textColor
             }} 
              >
                  {value}
@@ -65,7 +66,8 @@ const ProfileValue = ({icon, label, value, onPress}) => {
      source={icons.right_arrow}
      style={{
          width:15,
-         height:15
+         height:15,
+         tintColor:appTheme?.tintColor
 
      }}
      />
@@ -74,4 +76,18 @@ const ProfileValue = ({icon, label, value, onPress}) => {
   );
 };
 
-export default ProfileValue;
+const mapStateToProps = state => {
+  return {
+    appTheme: state.appTheme,
+  };
+};
+
+
+const mapDispatchToProps = dispatch => {
+  return {
+   
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileValue);
+
