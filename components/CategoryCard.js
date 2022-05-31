@@ -1,35 +1,66 @@
-import React from 'react'
-import { View, TouchableOpacity, Text, ImageBackground } from 'react-native'
-import { FONTS, COLORS, SIZES,  } from '../constants'
+import React from 'react';
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  ImageBackground,
+  Image,
+  Share,
+  StyleSheet,
+} from 'react-native';
+import {FONTS, COLORS, SIZES} from '../constants';
+import {SharedElement} from 'react-navigation-shared-element';
 
-const CategoryCard = ({category, containerStyle, imageStyle}) => {
+const CategoryCard = ({
+  sharedElementPrefix,
+  category,
+  containerStyle,
+  imageStyle,
+  onPress,
+}) => {
   return (
-   <TouchableOpacity 
-   >
-       <ImageBackground 
-        source={category?.thumbnail}
-        resizeMode="cover"
+    <TouchableOpacity
+      style={{
+        height: 150,
+        width: 200,
+        ...containerStyle,
+      }}
+      onPress={onPress}>
+      {/* Image Background */}
+      <SharedElement
+        id={`${sharedElementPrefix}-CategoryCard-Bg-${category?.id}`}
+        style={[StyleSheet.absoluteFillObject]}>
+        <Image
+          source={category?.thumbnail}
+          resizeMode="cover"
+          style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: SIZES.radius,
+          }} />
+      </SharedElement>
+      {/* TItle */}
+      <View
         style={{
-            height:150,
-            width:200,
-            paddingVertical: SIZES.padding,
-            paddingHorizontal: SIZES.radius,
-            justifyContent:"flex-end",
-            ...containerStyle,
-        }}
-        imageStyle={imageStyle}
-       >
-           <Text
+          position: 'absolute',
+          bottom: 50,
+          left: 5,
+        }}>
+        <SharedElement
+          id={`${sharedElementPrefix}-CategoryCard-Title-${category?.id}`}
+          style={[StyleSheet.absoluteFillObject]}>
+          <Text
             style={{
-                color:COLORS.white,
-                ...FONTS.h2
-            }}
-           >
+                position: 'absolute',
+              color: COLORS.white,
+              ...FONTS.h2,
+            }}>
             {category?.title}
-           </Text>
-       </ImageBackground>
-   </TouchableOpacity>
-  )
-}
+          </Text>
+        </SharedElement>
+      </View>
+    </TouchableOpacity>
+  );
+};
 
-export default CategoryCard
+export default CategoryCard;

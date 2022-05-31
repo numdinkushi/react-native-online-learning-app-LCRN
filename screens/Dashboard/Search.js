@@ -9,11 +9,12 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
-
+import {useNavigation} from '@react-navigation/native';
 import {TextButton, CategoryCard} from '../../components';
 import {FONTS, COLORS, icons, dummyData, SIZES} from '../../constants';
 
 const Search = () => {
+  const navigation = useNavigation();
   const scrollViewRef = useRef();
 
   const scrollY = useSharedValue(0);
@@ -31,7 +32,7 @@ const Search = () => {
           style={{
             marginHorizontal: SIZES.padding,
             ...FONTS.h2,
-            color: COLORS.black
+            color: COLORS.black,
           }}>
           Top Searches
         </Text>
@@ -92,10 +93,11 @@ const Search = () => {
           }}
           renderItem={({item, index}) => (
             <CategoryCard
+              sharedElementPrefix="Search"
               category={item}
               containerStyle={{
                 height: 130,
-                width: (SIZES.width - (SIZES.padding * 2) - SIZES.radius) / 2,
+                width: (SIZES.width - SIZES.padding * 2 - SIZES.radius) / 2,
                 marginTop: SIZES.radius,
                 marginLeft:
                   (index + 1) % 2 === 0 ? SIZES.radius : SIZES.padding,
@@ -103,6 +105,10 @@ const Search = () => {
               imageStyle={{
                 borderRadius: SIZES.radius,
               }}
+              onPress={() => navigation.navigate('CourseListing', {
+                category:item,
+                sharedElementPrefix:"Search"
+              })}
             />
           )}
         />
@@ -120,7 +126,12 @@ const Search = () => {
           [55, 0],
           Extrapolate.CLAMP,
         ),
-        opacity:interpolate(scrollY.value, inputRange, [1, 0], Extrapolate.CLAMP)
+        opacity: interpolate(
+          scrollY.value,
+          inputRange,
+          [1, 0],
+          Extrapolate.CLAMP,
+        ),
       };
     });
     return (
