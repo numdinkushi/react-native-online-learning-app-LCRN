@@ -8,7 +8,7 @@ import HorizontalCourseCard from "./HorizontalCourseCard";
 import ProgressBar from "./ProgressBar";
 import ProfileValue from "./ProfileValue";
 import ProfileRadioButton from "./ProfileRadioButton";
-
+import FilterModal from "./FilterModal";
 export {
     IconButton,
     TextButton,
@@ -19,5 +19,6 @@ export {
     HorizontalCourseCard,
     ProgressBar,
     ProfileValue,
-    ProfileRadioButton
+    ProfileRadioButton,
+    FilterModal
 }

@@ -17,7 +17,7 @@ import Animated, {
   withTiming,
   runOnJS,
 } from 'react-native-reanimated';
-import {HorizontalCourseCard, IconButton, LineDivider} from '../../components';
+import {FilterModal, HorizontalCourseCard, IconButton, LineDivider} from '../../components';
 import {FONTS, SIZES, images, icons, dummyData, COLORS} from '../../constants';
 import {SharedElement} from 'react-navigation-shared-element';
 
@@ -35,6 +35,10 @@ const CourseListing = ({navigation, route}) => {
   });
 
   const headerSharedValue = useSharedValue(80);
+
+  const FilterModalSharedValue1 = useSharedValue(SIZES.height)
+  const FilterModalSharedValue2 = useSharedValue(SIZES.height)
+
   //handler
   function backHandler() {
     navigation.goBack();
@@ -195,17 +199,25 @@ const CourseListing = ({navigation, route}) => {
               backgroundColor: COLORS.white,
             }}
             onPress={() => {
-              // backHandler()
-              setTimeout(() => {
-                headerSharedValue.value = withTiming(
-                  80,
-                  {duration: 500},
-                  () => {
-                    runOnJS(backHandler)();
-                  },
-                );
-              }, 100);
-            }}
+              if(scrollY.value > 0 && scrollY.value <= 200){
+                flatListRef.current?.scrollToOffset({
+                  offset: 0,
+                  animated:true
+                })
+                setTimeout(() => {
+                  headerSharedValue.value = withTiming(
+                    80,
+                    {duration: 500},
+                    () => {
+                      runOnJS(backHandler)();
+                    },
+                  );
+                }, 100);
+              }else{
+                backHandler()
+              }}
+              
+              }
           />
         </Animated.View>
         {/* Cateogry Image */}
@@ -271,6 +283,14 @@ const CourseListing = ({navigation, route}) => {
                 borderRadius: 10,
                 backgroundColor: COLORS.primary,
               }}
+              onPress={()=>{
+                FilterModalSharedValue1.value = withTiming(
+                  0,{ duration:100}
+                )
+                FilterModalSharedValue2.value = withDelay(
+                  100, withTiming(0, {duration:500})
+                )
+              }}
             />
           </View>
         }
@@ -301,6 +321,13 @@ const CourseListing = ({navigation, route}) => {
 
       {/* renderHeader */}
       {renderHeader()}
+
+      {/* Filter Modal */}
+      <FilterModal
+        FilterModalSharedValue1 ={FilterModalSharedValue1}
+        FilterModalSharedValue2 ={FilterModalSharedValue2}
+
+      />
     </View>
   );
 };
