@@ -10,6 +10,7 @@ import Animated, {
 
 import {TextButton, LineDivider} from '../components';
 import {FONTS, COLORS, SIZES, constants, icons} from '../constants';
+import TwoPointSlider from './TwoPointSlider';
 
 const ClassTypeOptions = ({containerStyle, classType, isSelected, onPress}) => {
   return (
@@ -126,6 +127,53 @@ const FilterModal = ({FilterModalSharedValue1, FilterModalSharedValue2}) => {
       transform: [{translateY: FilterModalSharedValue2.value}],
     };
   });
+
+  function renderFooter(){
+      return (
+          <View
+            style={{
+                flexDirection: 'row',
+                height:50,
+                marginBottom:30,
+                paddingHorizontal:SIZES.padding
+            }}
+          >
+              {/* Reset */}
+              <TextButton 
+                label="Reset"
+                contentContainerStyle={{
+                    flex:1,
+                    borderRadius:SIZES.radius,
+                    borderWidth:1,
+                    backgroundColor:null
+                }}
+              labelStyle={{
+                  color:COLORS.black,
+                  ...FONTS.h3,
+
+              }}
+              />
+              {/* Apply */}
+              <TextButton 
+              label="Apply"
+              contentContainerStyle={{
+                  flex:1,
+                  marginLeft:SIZES.radius,
+                  borderLeft: SIZES.radius,
+                  borderWidth:2,
+                  borderColor:COLORS.primary,
+                  backgroundColor: COLORS.primary
+              }}
+
+              labelStyle={{
+                  color:COLORS.white,
+                  ...FONTS.h3
+              }}
+              />
+          </View>
+      )
+  }
+
   return (
     //   Main Container
     <Animated.View
@@ -328,9 +376,25 @@ const FilterModal = ({FilterModalSharedValue1, FilterModalSharedValue2}) => {
                 >
                     Created Within
                 </Text>
+                <View
+                    style={{
+                        alignItems: 'center',
+
+                    }}
+                >
+                    <TwoPointSlider
+                        values={[20, 50]}
+                        min={15}
+                        max={60}
+                        postfix="min"
+                        onValuesChange={(values)=> console.log(values)}
+                    />
+                </View>
             </View>
 
           </ScrollView>
+          {/* Footer section*/}
+          {renderFooter()}
         </Animated.View>
       </Animated.View>
     </Animated.View>
