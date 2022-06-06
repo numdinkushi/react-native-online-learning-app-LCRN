@@ -17,7 +17,12 @@ import Animated, {
   withTiming,
   runOnJS,
 } from 'react-native-reanimated';
-import {FilterModal, HorizontalCourseCard, IconButton, LineDivider} from '../../components';
+import {
+  FilterModal,
+  HorizontalCourseCard,
+  IconButton,
+  LineDivider,
+} from '../../components';
 import {FONTS, SIZES, images, icons, dummyData, COLORS} from '../../constants';
 import {SharedElement} from 'react-navigation-shared-element';
 
@@ -36,8 +41,8 @@ const CourseListing = ({navigation, route}) => {
 
   const headerSharedValue = useSharedValue(80);
 
-  const FilterModalSharedValue1 = useSharedValue(SIZES.height)
-  const FilterModalSharedValue2 = useSharedValue(SIZES.height)
+  const FilterModalSharedValue1 = useSharedValue(SIZES.height);
+  const FilterModalSharedValue2 = useSharedValue(SIZES.height);
 
   //handler
   function backHandler() {
@@ -199,11 +204,11 @@ const CourseListing = ({navigation, route}) => {
               backgroundColor: COLORS.white,
             }}
             onPress={() => {
-              if(scrollY.value > 0 && scrollY.value <= 200){
+              if (scrollY.value > 0 && scrollY.value <= 200) {
                 flatListRef.current?.scrollToOffset({
                   offset: 0,
-                  animated:true
-                })
+                  animated: true,
+                });
                 setTimeout(() => {
                   headerSharedValue.value = withTiming(
                     80,
@@ -213,11 +218,10 @@ const CourseListing = ({navigation, route}) => {
                     },
                   );
                 }, 100);
-              }else{
-                backHandler()
-              }}
-              
+              } else {
+                backHandler();
               }
+            }}
           />
         </Animated.View>
         {/* Cateogry Image */}
@@ -283,13 +287,12 @@ const CourseListing = ({navigation, route}) => {
                 borderRadius: 10,
                 backgroundColor: COLORS.primary,
               }}
-              onPress={()=>{
-                FilterModalSharedValue1.value = withTiming(
-                  0,{ duration:100}
-                )
+              onPress={() => {
+                FilterModalSharedValue1.value = withTiming(0, {duration: 100});
                 FilterModalSharedValue2.value = withDelay(
-                  100, withTiming(0, {duration:500})
-                )
+                  100,
+                  withTiming(0, {duration: 500}),
+                );
               }}
             />
           </View>
@@ -301,6 +304,9 @@ const CourseListing = ({navigation, route}) => {
               marginVertical: SIZES.padding,
               marginTop: index == 0 ? SIZES.radius : SIZES.padding,
             }}
+            onPress={() =>
+              navigation.navigate('CourseDetails', {selectedCourse: item})
+            }
           />
         )}
         ItemSeparatorComponent={() => (
@@ -324,24 +330,26 @@ const CourseListing = ({navigation, route}) => {
 
       {/* Filter Modal */}
       <FilterModal
-        FilterModalSharedValue1 ={FilterModalSharedValue1}
-        FilterModalSharedValue2 ={FilterModalSharedValue2}
-
+        FilterModalSharedValue1={FilterModalSharedValue1}
+        FilterModalSharedValue2={FilterModalSharedValue2}
       />
     </View>
   );
 };
 
 CourseListing.sharedElement = (route, otherRoute, showing) => {
-  const {category, sharedElementPrefix} = route.params;
-  return [
-    {
-      id: `${sharedElementPrefix}-CategoryCard-Bg-${category?.id}`,
-    },
-    {
-      id: `${sharedElementPrefix}-CategoryCard-Title-${category?.id}`,
-    },
-  ];
+  if(otherRoute.name === "Dashboard"){
+
+    const {category, sharedElementPrefix} = route.params;
+    return [
+      {
+        id: `${sharedElementPrefix}-CategoryCard-Bg-${category?.id}`,
+      },
+      {
+        id: `${sharedElementPrefix}-CategoryCard-Title-${category?.id}`,
+      },
+    ];
+  }
 };
 
 export default CourseListing;

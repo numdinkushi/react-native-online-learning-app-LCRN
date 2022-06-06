@@ -118,7 +118,7 @@ export const lightTheme = {
     dotColor2: COLORS.primary3,
 }
 
-export const selectedTheme = lightTheme;
+export const selectedTheme = darkTheme
 
 const appTheme = { COLORS, SIZES, FONTS, darkTheme, lightTheme };
 
